@@ -1,28 +1,32 @@
-
 // index.js
-const http = require('http');
+const express = require('express'); // import Express
+const app = express();              // create app instance
+const PORT = 3000;                  // set port
 
-// Create the server
-const server = http.createServer((req, res) => {
-    // Set default content type
-    res.setHeader('Content-Type', 'text/plain');
+// Middleware to parse JSON (optional, useful for future features)
+app.use(express.json());
 
-    // Routing
-    if (req.url === '/') {
-        res.statusCode = 200;
-        res.end('Welcome to the homepage!');
-    } else if (req.url === '/about') {
-        res.statusCode = 200;
-        res.end('This is the about page.');
-    } else {
-        res.statusCode = 404;
-        res.end('Page not found');
-    }
+// Routes
+app.get('/', (req, res) => {
+  res.send('Welcome to the homepage!');
 });
 
-// Listen on port 3000
-const PORT = 3000;
-server.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+app.get('/about', (req, res) => {
+  res.send('This is the about page.');
+});
+
+// Optional login route
+app.get('/login', (req, res) => {
+  const { user, pass } = req.query; // example: /login?user=admin&pass=1234
+  if (user === 'admin' && pass === '1234') {
+    res.send('Login successful!');
+  } else {
+    res.send('Invalid username or password.');
+  }
+});
+
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
 
