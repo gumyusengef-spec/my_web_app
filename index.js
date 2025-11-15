@@ -1,28 +1,13 @@
-
-// index.js
 const http = require('http');
+const authenticateUser = require('./auth');
 
-// Create the server
 const server = http.createServer((req, res) => {
-    // Set default content type
-    res.setHeader('Content-Type', 'text/plain');
+  const result = authenticateUser("admin", "1234");
 
-    // Routing
-    if (req.url === '/') {
-        res.statusCode = 200;
-        res.end('Welcome to the homepage!');
-    } else if (req.url === '/about') {
-        res.statusCode = 200;
-        res.end('This is the about page.');
-    } else {
-        res.statusCode = 404;
-        res.end('Page not found');
-    }
+  res.writeHead(200, { 'Content-Type': 'text/plain' });
+  res.end("Auth Check: " + result);
 });
 
-// Listen on port 3000
-const PORT = 3000;
-server.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+server.listen(3000, () => {
+  console.log('Server running on http://localhost:3000');
 });
-
